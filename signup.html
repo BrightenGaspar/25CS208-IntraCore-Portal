@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="brand">IntraCore</a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="signin.html">Sign In</a>
+        <a href="home.html">Dashboard</a>
+        <button id="theme-toggle" class="btn btn-outline" type="button">Toggle Theme</button>
+      </nav>
+    </header>
+
+    <main>
+      <div class="form-container">
+        <h2>Create your account</h2>
+        <form id="register-form" novalidate>
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input id="fullName" name="fullName" type="text" placeholder="Enter your full name" />
+            <span class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="name@company.com" />
+            <span class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Create password" />
+            <span class="error-msg"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Re-enter password" />
+            <span class="error-msg"></span>
+          </div>
+
+          <button type="submit" class="btn">Continue</button>
+        </form>
+      </div>
+    </main>
+
+    <script src="js/theme.js" defer></script>
+    <script src="js/validation.js" defer></script>
+  </body>
+</html>

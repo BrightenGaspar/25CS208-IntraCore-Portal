@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="brand">IntraCore</a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="signin.html">Sign In</a>
+        <a href="home.html">Dashboard</a>
+        <button id="theme-toggle" class="btn btn-outline" type="button">Toggle Theme</button>
+      </nav>
+    </header>
+
+    <main class="dashboard-container">
+      <aside class="card">
+        <h3>Quick Access</h3>
+        <ul>
+          <li>Overview</li>
+          <li>Attendance</li>
+          <li>Projects</li>
+          <li>Support</li>
+        </ul>
+      </aside>
+
+      <section class="card">
+        <h2>Welcome back, Aisha</h2>
+        <div class="card-grid">
+          <article class="card">
+            <h3>Team Members</h3>
+            <p>128 active employees</p>
+          </article>
+          <article class="card">
+            <h3>Open Tasks</h3>
+            <p>18 tasks due this week</p>
+          </article>
+          <article class="card">
+            <h3>System Health</h3>
+            <p>99.8% uptime</p>
+          </article>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h3>Calculator</h3>
+        <input id="calc-display" class="calc-display" type="text" value="0" readonly />
+        <div class="calc-grid">
+          <button type="button" data-calc-key="7">7</button>
+          <button type="button" data-calc-key="8">8</button>
+          <button type="button" data-calc-key="9">9</button>
+          <button type="button" class="op" data-calc-key="/">/</button>
+          <button type="button" data-calc-key="4">4</button>
+          <button type="button" data-calc-key="5">5</button>
+          <button type="button" data-calc-key="6">6</button>
+          <button type="button" class="op" data-calc-key="*">*</button>
+          <button type="button" data-calc-key="1">1</button>
+          <button type="button" data-calc-key="2">2</button>
+          <button type="button" data-calc-key="3">3</button>
+          <button type="button" class="op" data-calc-key="-">-</button>
+          <button type="button" data-calc-key="C">C</button>
+          <button type="button" data-calc-key="0">0</button>
+          <button type="button" class="op" data-calc-key="=">=</button>
+          <button type="button" class="op" data-calc-key="+">+</button>
+        </div>
+      </aside>
+    </main>
+
+    <button id="chat-toggle" class="chat-fab" type="button" aria-label="Open chat">💬</button>
+
+    <div id="chat-panel" class="chat-panel">
+      <div class="chat-header">
+        <span>Assistant</span>
+        <button type="button" class="btn btn-outline" id="chat-close">Close</button>
+      </div>
+      <div id="chat-log" class="chat-log">
+        <div class="bot-msg">Hello! Ask me about registration or portal help.</div>
+      </div>
+      <div class="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Type a message..." />
+        <button type="button" class="btn" id="send-chat" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+
+    <script src="js/theme.js" defer></script>
+    <script src="js/calculator.js" defer></script>
+    <script src="js/chatbot.js" defer></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const chatToggle = document.getElementById("chat-toggle");
+        const chatPanel = document.getElementById("chat-panel");
+        const chatClose = document.getElementById("chat-close");
+
+        if (chatToggle && chatPanel) {
+          chatToggle.addEventListener("click", () => chatPanel.classList.toggle("open"));
+        }
+
+        if (chatClose && chatPanel) {
+          chatClose.addEventListener("click", () => chatPanel.classList.remove("open"));
+        }
+
+        document.querySelectorAll("[data-calc-key]").forEach((button) => {
+          button.addEventListener("click", () => pressKey(button.dataset.calcKey));
+        });
+
+        const chatInput = document.getElementById("chat-input");
+        if (chatInput) {
+          chatInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              sendChatMessage();
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
