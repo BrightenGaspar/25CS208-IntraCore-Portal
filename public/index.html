@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#047857" />
+    <title>VitalCore — Personal Wellness Planner</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="/js/app.js" defer></script>
+  </head>
+  <body>
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+    <header class="topbar no-print">
+      <a class="brand" href="/" aria-label="VitalCore home">
+        <span class="brand-mark" aria-hidden="true">+</span>
+        <span>Vital<span class="brand-accent">Core</span><small>PERSONAL WELLNESS</small></span>
+      </a>
+      <nav class="tabs" aria-label="Main sections">
+        <button class="tab-btn active" type="button" data-tab="overview">Overview</button>
+        <button class="tab-btn" type="button" data-tab="tracker">Weight tracker</button>
+        <button class="tab-btn" type="button" data-tab="schedule">Daily plan</button>
+      </nav>
+      <div class="top-actions">
+        <button id="print-btn" class="button button-quiet" type="button">Print plan</button>
+        <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle color theme">◐</button>
+      </div>
+    </header>
+
+    <main class="page">
+      <div class="notice">
+        <strong>Wellness tool, not medical advice.</strong>
+        Metrics are estimates for general planning. Demo profile data is fictional; consult a qualified professional for medical or nutrition advice.
+      </div>
+
+      <section id="panel-overview" class="tab-panel">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">YOUR HEALTH, AT A GLANCE</p>
+            <h1>Overview &amp; analyzer</h1>
+            <p class="muted">Update your profile to refresh your wellness estimates and daily targets.</p>
+          </div>
+          <span id="sync-status" class="sync-pill"><span></span> Saved to this server</span>
+        </div>
+
+        <div class="overview-grid">
+          <section class="card profile-card">
+            <div class="card-heading">
+              <div>
+                <h2>Health profile</h2>
+                <p class="muted">Your profile is stored in this app's local data file.</p>
+              </div>
+            </div>
+            <form id="profile-form" class="form-grid">
+              <label class="field field-wide">Full name
+                <input id="input-name" name="name" type="text" minlength="2" maxlength="60" autocomplete="name" required />
+              </label>
+              <label class="field">Biological sex
+                <select id="input-gender" name="gender">
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                </select>
+              </label>
+              <label class="field">Age (years)
+                <input id="input-age" name="age" type="number" min="14" max="100" step="1" required />
+              </label>
+              <label class="field">Height (cm)
+                <input id="input-height" name="height" type="number" min="110" max="240" step="0.5" required />
+              </label>
+              <label class="field">Current weight (kg)
+                <input id="input-weight" name="weight" type="number" min="30" max="300" step="0.1" required />
+              </label>
+              <label class="field">Target weight (kg)
+                <input id="input-target-weight" name="targetWeight" type="number" min="30" max="300" step="0.1" required />
+              </label>
+              <label class="field">Primary goal
+                <select id="input-goal" name="goal">
+                  <option value="loss">Weight loss</option>
+                  <option value="gain">Weight gain</option>
+                  <option value="maintain">Maintain weight</option>
+                </select>
+              </label>
+              <label class="field">Weekly pace
+                <select id="input-pace" name="pace">
+                  <option value="0.25">Gentle · 0.25 kg</option>
+                  <option value="0.5">Steady · 0.50 kg</option>
+                  <option value="0.75">Faster · 0.75 kg</option>
+                </select>
+              </label>
+              <label class="field field-wide">Activity level
+                <select id="input-activity" name="activity">
+                  <option value="1.2">Sedentary · little exercise</option>
+                  <option value="1.375">Light · 1–3 sessions/week</option>
+                  <option value="1.55">Moderate · 3–5 sessions/week</option>
+                  <option value="1.725">Active · 6–7 sessions/week</option>
+                  <option value="1.9">Very active · athlete / physical work</option>
+                </select>
+              </label>
+              <label class="field field-wide">Diet preference
+                <select id="input-diet" name="diet">
+                  <option value="balanced">Balanced</option>
+                  <option value="high_protein">Higher protein</option>
+                  <option value="vegetarian">Vegetarian</option>
+                  <option value="keto">Low carbohydrate</option>
+                </select>
+              </label>
+              <label class="field">Wake-up time
+                <input id="input-wake" name="wakeTime" type="time" required />
+              </label>
+              <label class="field">Sleep time
+                <input id="input-sleep" name="sleepTime" type="time" required />
+              </label>
+              <div class="field-wide form-actions">
+                <button class="button button-primary" type="submit">Save profile &amp; analyze</button>
+                <span class="muted small">Estimates are for adults and are not a diagnosis.</span>
+              </div>
+            </form>
+          </section>
+
+          <div class="analysis-column">
+            <section class="welcome-banner">
+              <div>
+                <p class="eyebrow">PERSONAL WELLNESS SUMMARY</p>
+                <h2 id="banner-greeting">Welcome</h2>
+                <p id="banner-summary"></p>
+              </div>
+              <div class="timeline-stat">
+                <span>Estimated timeline</span>
+                <strong id="metric-timeline">—</strong>
+                <small id="metric-target-date">—</small>
+              </div>
+            </section>
+
+            <div class="metric-grid">
+              <article class="card metric-card"><span>BMI estimate</span><strong id="metric-bmi">—</strong><small id="bmi-badge">—</small></article>
+              <article class="card metric-card"><span>Resting energy · BMR</span><strong id="metric-bmr">—</strong><small>kcal / day</small></article>
+              <article class="card metric-card"><span>Maintenance · TDEE</span><strong id="metric-tdee">—</strong><small>kcal / day</small></article>
+              <article class="card metric-card"><span>Hydration estimate</span><strong id="metric-water">—</strong><small id="metric-glasses">—</small></article>
+            </div>
+
+            <section class="card">
+              <div class="card-heading">
+                <div><h2>Daily energy &amp; macros</h2><p id="calorie-adjustment-note" class="muted"></p></div>
+                <div class="target-calories"><span>Daily target</span><strong id="metric-target-calories">—</strong></div>
+              </div>
+              <div class="macro-grid">
+                <article class="macro macro-protein"><div><span>Protein</span><b id="macro-protein-pct">—</b></div><strong id="macro-protein-g">—</strong><small id="macro-protein-kcal">—</small><span class="macro-track"><i id="bar-protein"></i></span></article>
+                <article class="macro macro-carbs"><div><span>Carbohydrates</span><b id="macro-carbs-pct">—</b></div><strong id="macro-carbs-g">—</strong><small id="macro-carbs-kcal">—</small><span class="macro-track"><i id="bar-carbs"></i></span></article>
+                <article class="macro macro-fats"><div><span>Fats</span><b id="macro-fats-pct">—</b></div><strong id="macro-fats-g">—</strong><small id="macro-fats-kcal">—</small><span class="macro-track"><i id="bar-fats"></i></span></article>
+              </div>
+              <p class="footnote">BMI, calorie and hydration calculations are rough estimates. Individual needs vary.</p>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-tracker" class="tab-panel hidden">
+        <div class="page-heading">
+          <div><p class="eyebrow">MEASURE TRENDS OVER TIME</p><h1>Weight tracker</h1><p class="muted">Add check-ins to see your progress toward your target.</p></div>
+          <div class="top-actions no-print">
+            <button id="export-csv-btn" class="button button-quiet" type="button">Export CSV</button>
+            <button id="clear-logs-btn" class="button button-danger-quiet" type="button">Reset logs</button>
+          </div>
+        </div>
+        <div class="metric-grid tracker-metrics">
+          <article class="card metric-card"><span>Current profile weight</span><strong id="track-start-weight">—</strong><small id="track-start-date">—</small></article>
+          <article class="card metric-card"><span id="track-current-label">Latest check-in</span><strong id="track-current-weight">—</strong><small id="track-latest-date">—</small></article>
+          <article class="card metric-card"><span>Net change</span><strong id="track-net-change">—</strong><small id="track-net-caption">from first to latest</small></article>
+          <article class="card metric-card"><span>To target</span><strong id="track-remaining">—</strong><small id="track-goal-badge">—</small></article>
+        </div>
+        <div class="tracker-grid">
+          <section class="card chart-card">
+            <div class="card-heading"><div><h2>Weight trend</h2><p class="muted">Your check-ins compared with your target.</p></div></div>
+            <div class="chart-wrap"><canvas id="weight-chart" aria-label="Weight trend chart"></canvas></div>
+          </section>
+          <section class="card">
+            <h2>Log a check-in</h2>
+            <p class="muted">Use a consistent time of day for more useful comparisons.</p>
+            <form id="weight-log-form" class="stack-form">
+              <label class="field">Date<input id="log-date" type="date" required /></label>
+              <label class="field">Weight (kg)<input id="log-weight" type="number" min="30" max="300" step="0.1" placeholder="e.g. 74.2" required /></label>
+              <label class="field">Note <span class="muted">(optional)</span><input id="log-note" type="text" maxlength="60" placeholder="Short note" /></label>
+              <button class="button button-primary" type="submit">Add weight entry</button>
+            </form>
+          </section>
+        </div>
+        <section class="card table-card">
+          <div class="card-heading"><div><h2>Check-in history</h2><p class="muted">Newest entries appear first.</p></div><span id="log-count-badge" class="count-badge">0 entries</span></div>
+          <div class="table-scroll"><table><thead><tr><th>Date</th><th>Weight</th><th>Change</th><th>Note</th><th class="no-print">Action</th></tr></thead><tbody id="weight-history-tbody"></tbody></table></div>
+        </section>
+      </section>
+
+      <section id="panel-schedule" class="tab-panel hidden">
+        <div class="page-heading">
+          <div><p class="eyebrow">A ROUTINE THAT FITS YOUR DAY</p><h1>Daily plan</h1><p class="muted">A flexible example schedule based on your profile and preferences.</p></div>
+          <button id="reset-checks-btn" class="button button-quiet no-print" type="button">Reset today's checks</button>
+        </div>
+        <section class="card adherence-card">
+          <div><span class="eyebrow">TODAY'S CHECK-IN</span><h2 id="schedule-diet-tag">Balanced plan</h2><p id="schedule-window-subtitle" class="muted"></p></div>
+          <div class="adherence"><div><span>Completed</span><strong id="adherence-pct">0%</strong></div><div class="progress-track"><i id="adherence-bar"></i></div><small id="adherence-count">0 of 0 blocks completed</small></div>
+        </section>
+        <div id="schedule-timeline" class="schedule-list"></div>
+      </section>
+    </main>
+    <footer class="footer">VitalCore is an educational wellness planner. It does not provide medical advice, diagnosis, or treatment.</footer>
+  </body>
+</html>
